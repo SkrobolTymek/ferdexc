@@ -1,3 +1,3 @@
-fn main(){
+mod ast;
 
-}
+fn main() {}
