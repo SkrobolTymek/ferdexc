@@ -68,14 +68,18 @@ pub fn lex() -> LexerOutput{
         return LexerOutput::Failure(String::from(format!("error: could not open file \"{file_path}\"")));
     }
 
-    
+    let file_text: String = file_text.ok().expect("should be valid as error handled earlier");
+    let mut tokens: Vec<Token> = Vec::new();
+    let mut errors: Vec<String> = Vec::new();
+    let mut can_compile: bool = true;
 
+    let mut index: usize = 0;
+    let mut line: usize = 1;
+    let mut col: usize = 1;
 
-
-
-
-
-
+    loop{
+        
+    }
 
 }
 
