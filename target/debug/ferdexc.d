@@ -1,1 +1,1 @@
-C:\Users\Programista\Desktop\ferdexc\target\debug\ferdexc.exe: C:\Users\Programista\Desktop\ferdexc\src\ast\lexer.rs C:\Users\Programista\Desktop\ferdexc\src\ast\mod.rs C:\Users\Programista\Desktop\ferdexc\src\main.rs
+/home/saizzan/programowanie/ferdexc/target/debug/ferdexc: /home/saizzan/programowanie/ferdexc/src/ast/lexer.rs /home/saizzan/programowanie/ferdexc/src/ast/mod.rs /home/saizzan/programowanie/ferdexc/src/main.rs
