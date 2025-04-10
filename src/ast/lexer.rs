@@ -61,13 +61,15 @@ impl<'a> Lexer<'a>{
         }
 
 
-        if self.current_pos >= self.input.len() {
+        if self.current_pos == self.input.len() {
+            let eof_char = '\0';
             self.current_pos += 1;
             return Some(Token::new(
                 TokenKind::Eof,
-                TextSpan::new(0, 0, "\0".to_string())
+                TextSpan::new(0, 0, eof_char.to_string())
             ));
         }
+
         let start   = self.current_pos;
         let c = self.current_char();
         let mut kind = TokenKind::Bad;
@@ -89,11 +91,11 @@ impl<'a> Lexer<'a>{
         self.input.chars().nth(self.current_pos).unwrap()
     }
     fn consume(&mut self) -> Option<char> {
-        let c = self.current_char();
-        self.current_pos += 1;
-        if self.current_pos >= self.input.len(){
+        if self.current_pos >= self.input.len() {
             return None;
         }
+        let c = self.current_char();
+        self.current_pos += 1;
         Some(c)
     }
 
