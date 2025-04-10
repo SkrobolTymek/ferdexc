@@ -87,9 +87,15 @@ impl<'a> Lexer<'a>{
     fn is_number_start(c: &char) -> bool {
         c.is_digit(10) 
     }
-    fn current_char(&self) -> char {
-        self.input.chars().nth(self.current_pos).unwrap()
+    fn current_char(&self) -> Option<char> {
+        self.input.chars().nth(self.current_pos)
     }
+
+    fn peek_char(&self) -> Option<char> {
+        self.input.chars().nth(self.current_pos + 1)
+    }
+
+
     fn consume(&mut self) -> Option<char> {
         if self.current_pos >= self.input.len() {
             return None;
@@ -101,7 +107,7 @@ impl<'a> Lexer<'a>{
 
     fn consume_number(&mut self) -> i64{
         let mut number: i64 = 0;
-        while let Some(c) = self.consume(){
+        while let Some(c) = self.current_char(){
             if c.is_digit(10){
                 number = number * 10 + c.to_digit(10).unwrap() as i64;
             }
