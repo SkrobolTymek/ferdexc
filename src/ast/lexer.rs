@@ -1,3 +1,5 @@
+#[derive(Debug)]
+
 pub enum TokenKind{
     Number(i64),
     Plus,
@@ -6,7 +8,12 @@ pub enum TokenKind{
     Slash,
     LeftParen,
     RightParen,
+    Bad,
+    Whitespace,
+    Eof,
 }
+
+#[derive(Debug)]
 
 pub struct TextSpan {
     start: usize,
@@ -26,6 +33,7 @@ impl TextSpan {
 }
 
 
+#[derive(Debug)]
 pub struct Token {
     kind: TokenKind,
     span: TextSpan,
@@ -40,35 +48,35 @@ impl Token {
 
 pub struct Lexer<'a>{
     input: &'a str,
-    current_pass: usize,
+    current_pos: usize,
 }
 
 impl<'a> Lexer<'a>{
     pub fn new(input: &'a str) -> Self{
-        Self {input, current_pass: 0}
+        Self {input, current_pos: 0}
     }
     pub fn next_token(&mut self) -> Option<Token> {
-        if self.current_pass > self.input.len() {
+        if self.current_pos > self.input.len() {
             return None;
         }
 
 
-        if self.current_pass >= self.input.len() {
-            self.current_pass += 1;
+        if self.current_pos >= self.input.len() {
+            self.current_pos += 1;
             return Some(Token::new(
-                TokenKind::EOF,
+                TokenKind::Eof,
                 TextSpan::new(0, 0, "\0".to_string())
             ));
         }
-        let start   = self.current_pass;
+        let start   = self.current_pos;
         let c = self.current_char();
         let mut kind = TokenKind::Bad;
-        if self::is_number_start(&c){
-            let number: i64 = self.tokenize_number();
+        if Self::is_number_start(&c){
+            let number: i64 = self.consume_number();
             kind = TokenKind::Number(number);
         }
 
-        let end = self.current_pass;
+        let end = self.current_pos;
         let literal = self.input[start..end].to_string();
         let span = TextSpan::new(start, end, literal);
         Some(Token::new(kind, span))
@@ -78,12 +86,28 @@ impl<'a> Lexer<'a>{
         c.is_digit(10) 
     }
     fn current_char(&self) -> char {
-        self.input.chars().nth(self.current_pass).unwrap()
+        self.input.chars().nth(self.current_pos).unwrap()
     }
-    fn consume_char(&mut self) -> Option<char> {
+    fn consume(&mut self) -> Option<char> {
         let c = self.current_char();
-        self.current_pass += 1;
+        self.current_pos += 1;
+        if self.current_pos >= self.input.len(){
+            return None;
+        }
         Some(c)
+    }
+
+    fn consume_number(&mut self) -> i64{
+        let mut number: i64 = 0;
+        while let Some(c) = self.consume(){
+            if c.is_digit(10){
+                number = number * 10 + c.to_digit(10).unwrap() as i64;
+            }
+            else{
+                break;
+            }
+        }
+        number
     }
 
 }
