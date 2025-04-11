@@ -9,3 +9,8 @@
 
 Today I should be able to run basic arithmetic expressions, like:
 7 + (3 + 2)* 8
+
+### 11.04.2025
+
+- [ ] Error reporting
+- [ ] Variables
