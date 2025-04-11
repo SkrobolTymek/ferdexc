@@ -1,4 +1,4 @@
-use crate::ast::lexer::{TextSpan, TokenKind};
+use crate::ast::lexer::{TextSpan, Token, TokenKind};
 
 pub enum DiagnosticKind{
     Error,
